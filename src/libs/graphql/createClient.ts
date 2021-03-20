@@ -19,35 +19,38 @@ const getApiURI = () => {
 
 export interface CreateClientOpts {
   uri?: string;
-  data?: NormalizedCacheObject;
+  state?: NormalizedCacheObject;
 }
 
-const createClient = ({
+export const createClient = ({
   uri = getApiURI(),
-  data,
+  state,
 }: CreateClientOpts = {}): ApolloClient<NormalizedCacheObject> => {
   const ssrMode = typeof window === 'undefined';
   if (!ssrMode && client) {
-    if (data) {
-      client.cache.restore(data);
+    if (state) {
+      client.cache.restore(state);
     }
     return client;
   }
 
   const _client = new ApolloClient({
     queryDeduplication: true,
-    cache: new InMemoryCache().restore(data ?? {}),
+    cache: new InMemoryCache().restore(state ?? {}),
     ssrMode,
     link: ApolloLink.from([
       onError(({ graphQLErrors, networkError }) => {
         if (process.env.NODE_ENV === 'development') {
-          if (graphQLErrors)
-            graphQLErrors.map(({ message, locations, path }) =>
+          if (graphQLErrors) {
+            graphQLErrors.forEach(({ message, locations, path }) =>
               console.log(
                 `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
               )
             );
-          if (networkError) console.log(`[Network error]: ${networkError}`);
+          }
+          if (networkError) {
+            console.log(`[Network error]: ${networkError}`);
+          }
         }
       }),
       new HttpLink({ uri }),
@@ -58,5 +61,3 @@ const createClient = ({
   client = _client;
   return client;
 };
-
-export default createClient;
