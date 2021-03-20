@@ -1,13 +1,23 @@
+import clsx from 'clsx';
 import { Route } from 'config/routing';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Container } from '@material-ui/core';
 import Link from 'common/Link/Link';
 
-const TopBar = () => {
+export interface TopBarProps {
+  transparent?: boolean;
+}
+
+const TopBar = ({ transparent }: TopBarProps) => {
   const classes = useStyles();
   return (
-    <AppBar position="absolute" component="header" className={classes.navbar}>
+    <AppBar
+      position="absolute"
+      color="primary"
+      component="nav"
+      className={clsx(classes.navbar, { transparent })}
+    >
       <Container>
         <Toolbar disableGutters>
           <div>
@@ -30,6 +40,10 @@ const useStyles = makeStyles(theme => ({
       transition: 'all .2s',
       cursor: 'pointer',
       padding: theme.spacing(0.75, 1),
+    },
+    '&.transparent': {
+      boxShadow: 'none',
+      backgroundColor: 'transparent',
     },
   },
   title: {
