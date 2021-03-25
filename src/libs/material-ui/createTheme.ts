@@ -3,9 +3,10 @@ import {
   responsiveFontSizes,
   Theme,
 } from '@material-ui/core/styles';
+import { PaletteOptions } from '@material-ui/core/styles/createPalette';
 import { blue, pink } from '@material-ui/core/colors';
 
-const createTheme = (): Theme => {
+const createTheme = (paletteType?: PaletteOptions['type']): Theme => {
   return responsiveFontSizes(
     createMuiTheme({
       typography: {
@@ -14,6 +15,7 @@ const createTheme = (): Theme => {
         },
       },
       palette: {
+        type: paletteType,
         primary: {
           main: blue['A200'],
         },
