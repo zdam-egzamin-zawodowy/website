@@ -44,7 +44,10 @@ const TestForm = ({ qualification }: TestFormProps) => {
           title="Rozpocznij test"
           href={{
             pathname: Route.TestPage,
-            query: { slug: qualification.slug, questions: howManyQuestions },
+            query: {
+              slug: qualification.slug,
+              limit: howManyQuestions,
+            },
           }}
         >
           <Button variant="contained" color="secondary">

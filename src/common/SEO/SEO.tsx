@@ -4,7 +4,7 @@ import { URL } from 'config/app';
 
 import Head from 'next/head';
 
-const NAME = 'zdamegzaminzawodowy.pl';
+const NAME = 'Zdam Egzamin Zawodowy';
 const DEFAULT_DESCRIPTION =
   'zdamegzaminzawodowy.pl to ogromny baza pytań z różnych egzaminów zawodowych. Pytania pochodzą z arkuszy z lat ubiegłych.';
 

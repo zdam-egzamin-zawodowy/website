@@ -44,24 +44,24 @@ const Profession = ({ profession }: ProfessionProps) => {
                         {qualification.name} ({qualification.code})
                       </strong>{' '}
                       -&gt;{' '}
-                      {QUESTIONS.map((howManyQuestions, index) => {
+                      {QUESTIONS.map((limit, index) => {
                         return (
-                          <span key={howManyQuestions}>
+                          <span key={limit}>
                             <Link
                               href={{
                                 pathname: Route.TestPage,
                                 query: {
                                   slug: qualification.slug,
-                                  questions: howManyQuestions,
+                                  limit: limit,
                                 },
                               }}
                             >
-                              Test {howManyQuestions}{' '}
+                              Test {limit}{' '}
                               {polishPlurals(
                                 'pytanie',
                                 'pytania',
                                 'pytań',
-                                howManyQuestions
+                                limit
                               )}
                             </Link>
                             {index + 1 !== QUESTIONS.length ? ' | ' : ''}
