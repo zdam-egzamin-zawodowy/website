@@ -2,8 +2,8 @@ import { polishPlurals } from 'polish-plurals';
 import { useCountdown } from 'libs/hooks';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Typography, Grid } from '@material-ui/core';
-import Section from '../Section/Section';
+import { Container, Grid, Typography } from '@material-ui/core';
+import Section, { BgColor, Size } from '../Section/Section';
 
 export interface TimerProps {
   dateOfTheExam: Date | string;
@@ -16,7 +16,7 @@ const Timer = ({ dateOfTheExam }: TimerProps) => {
   );
 
   return (
-    <Section className={classes.textAlignCenter}>
+    <Section bgColor={BgColor.Primary} className={classes.textAlignCenter}>
       <Container>
         <Typography variant="h2" gutterBottom>
           Do najbliższej sesji egzaminacyjnej pozostało

@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
 export enum Size {
+  Small = 'small',
   Medium = 'medium',
   Large = 'large',
 }
@@ -21,8 +22,8 @@ export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const Section = ({
-  size = Size.Medium,
-  bgColor = BgColor.Primary,
+  size = Size.Small,
+  bgColor,
   className,
   children,
   ...rest
@@ -47,11 +48,12 @@ const Section = ({
 
 const useStyles = makeStyles(theme => ({
   section: {
+    padding: theme.spacing(3, 0),
     '&.is-medium': {
-      padding: theme.spacing(3, 0),
+      padding: theme.spacing(8, 0),
     },
     '&.is-large': {
-      padding: theme.spacing(8, 0),
+      padding: theme.spacing(15, 0),
     },
     '&.is-primary': {
       backgroundColor: theme.palette.primary.main,

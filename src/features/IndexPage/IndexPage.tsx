@@ -11,6 +11,7 @@ import { QUERY_PROFESSIONS } from './queries';
 import Layout from 'common/Layout/Layout';
 import Header from './components/Header/Header';
 import Timer from './components/Timer/Timer';
+import AboutExam from './components/AboutExam/AboutExam';
 
 interface IndexPageProps {
   professions: Profession[];
@@ -23,6 +24,7 @@ const IndexPage = ({ qualifications, dateOfTheExam }: IndexPageProps) => {
     <Layout padding={false}>
       <Header qualifications={qualifications} />
       <Timer dateOfTheExam={dateOfTheExam} />
+      <AboutExam />
     </Layout>
   );
 };
