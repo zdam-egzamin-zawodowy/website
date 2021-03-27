@@ -15,14 +15,14 @@ export enum BgColor {
 }
 
 export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
-  size: Size;
-  bgColor: BgColor;
-  className: string;
+  size?: Size;
+  bgColor?: BgColor;
+  className?: string;
 }
 
 const Section = ({
-  size,
-  bgColor,
+  size = Size.Medium,
+  bgColor = BgColor.Primary,
   className,
   children,
   ...rest

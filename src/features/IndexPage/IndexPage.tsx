@@ -10,16 +10,19 @@ import { QUERY_PROFESSIONS } from './queries';
 
 import Layout from 'common/Layout/Layout';
 import Header from './components/Header/Header';
+import Timer from './components/Timer/Timer';
 
 interface IndexPageProps {
   professions: Profession[];
   qualifications: Qualification[];
+  dateOfTheExam: string;
 }
 
-const IndexPage = ({ qualifications }: IndexPageProps) => {
+const IndexPage = ({ qualifications, dateOfTheExam }: IndexPageProps) => {
   return (
     <Layout padding={false}>
       <Header qualifications={qualifications} />
+      <Timer dateOfTheExam={dateOfTheExam} />
     </Layout>
   );
 };
@@ -37,7 +40,11 @@ const getQualificationsFromProfessions = (
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const pageProps: IndexPageProps = { professions: [], qualifications: [] };
+  const pageProps: IndexPageProps = {
+    professions: [],
+    qualifications: [],
+    dateOfTheExam: new Date(process.env.DATE_OF_THE_EXAM ?? 0).toISOString(),
+  };
   const client = createClient();
 
   try {

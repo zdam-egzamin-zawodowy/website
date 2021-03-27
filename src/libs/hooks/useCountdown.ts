@@ -16,8 +16,8 @@ const calculateDifference = (
     days: difference > 0 ? Math.floor(difference / (1000 * 60 * 60 * 24)) : 0,
     hours:
       difference > 0 ? Math.floor((difference / (1000 * 60 * 60)) % 24) : 0,
-    minutes: difference ? Math.floor((difference / 1000 / 60) % 60) : 0,
-    seconds: difference ? Math.floor((difference / 1000) % 60) : 0,
+    minutes: difference > 0 ? Math.floor((difference / 1000 / 60) % 60) : 0,
+    seconds: difference > 0 ? Math.floor((difference / 1000) % 60) : 0,
   };
 };
 
