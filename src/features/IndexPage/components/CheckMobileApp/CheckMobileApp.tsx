@@ -13,7 +13,10 @@ const CheckMobileApp = () => {
           Nie zapomnij sprawdzić naszej aplikacji mobilnej!
         </Typography>
         <Typography align="center">
-          <Link href={GOOGLE_PLAY_URL} title="Pobierz z Google Play">
+          <Link
+            href={GOOGLE_PLAY_URL}
+            title="Pobierz aplikację na Androida z Google Play"
+          >
             <img
               style={{ width: '200px' }}
               src="/images/google-play-badge.svg"
