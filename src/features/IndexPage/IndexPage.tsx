@@ -8,10 +8,12 @@ import {
 } from 'libs/graphql';
 import { QUERY_PROFESSIONS } from './queries';
 
+import { Divider } from '@material-ui/core';
 import Layout from 'common/Layout/Layout';
 import Header from './components/Header/Header';
 import Timer from './components/Timer/Timer';
 import AboutExam from './components/AboutExam/AboutExam';
+import ExamParts from './components/ExamParts/ExamParts';
 
 interface IndexPageProps {
   professions: Profession[];
@@ -25,6 +27,8 @@ const IndexPage = ({ qualifications, dateOfTheExam }: IndexPageProps) => {
       <Header qualifications={qualifications} />
       <Timer dateOfTheExam={dateOfTheExam} />
       <AboutExam />
+      <Divider />
+      <ExamParts />
     </Layout>
   );
 };
