@@ -14,6 +14,8 @@ import Header from './components/Header/Header';
 import Timer from './components/Timer/Timer';
 import AboutExam from './components/AboutExam/AboutExam';
 import ExamParts from './components/ExamParts/ExamParts';
+import CheckMobileApp from './components/CheckMobileApp/CheckMobileApp';
+import Professions from './components/Professions/Professions';
 
 interface IndexPageProps {
   professions: Profession[];
@@ -21,7 +23,11 @@ interface IndexPageProps {
   dateOfTheExam: string;
 }
 
-const IndexPage = ({ qualifications, dateOfTheExam }: IndexPageProps) => {
+const IndexPage = ({
+  qualifications,
+  dateOfTheExam,
+  professions,
+}: IndexPageProps) => {
   return (
     <Layout padding={false}>
       <Header qualifications={qualifications} />
@@ -29,6 +35,8 @@ const IndexPage = ({ qualifications, dateOfTheExam }: IndexPageProps) => {
       <AboutExam />
       <Divider />
       <ExamParts />
+      <CheckMobileApp />
+      <Professions professions={professions} />
     </Layout>
   );
 };

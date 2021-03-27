@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Container, Grid } from '@material-ui/core';
 import Section, { Size } from '../Section/Section';
 
-function AboutSection() {
+const ExamParts = () => {
   const classes = useStyles();
   return (
     <Section size={Size.Medium}>
@@ -16,7 +16,7 @@ function AboutSection() {
             <div className={classes.imageWrapper}>
               <Image
                 src="/images/written-part.png"
-                alt="Część pisemna"
+                alt="Egzamin zawodowy - Część pisemna"
                 width={608}
                 height={408}
               />
@@ -33,7 +33,7 @@ function AboutSection() {
             <div className={classes.imageWrapper}>
               <Image
                 src="/images/practical-part.png"
-                alt="Część praktyczna"
+                alt="Egzamin zawodowy - Część praktyczna"
                 width={608}
                 height={408}
               />
@@ -50,7 +50,7 @@ function AboutSection() {
       </Container>
     </Section>
   );
-}
+};
 
 const useStyles = makeStyles(theme => ({
   examPart: {
@@ -64,4 +64,4 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default AboutSection;
+export default ExamParts;

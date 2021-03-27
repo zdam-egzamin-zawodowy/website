@@ -12,6 +12,7 @@ export const QUERY_PROFESSIONS = gql`
           slug
           code
           name
+          formula
         }
       }
     }

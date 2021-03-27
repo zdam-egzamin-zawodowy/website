@@ -70,8 +70,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(5),
+    paddingBottom: theme.spacing(5),
   },
   imageWrapper: {
     textAlign: 'center',

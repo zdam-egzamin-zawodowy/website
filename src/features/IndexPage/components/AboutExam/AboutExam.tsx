@@ -3,7 +3,7 @@ import React from 'react';
 import { Container, Typography } from '@material-ui/core';
 import Section, { Size } from '../Section/Section';
 
-function AboutExam() {
+const AboutExam = () => {
   return (
     <Section size={Size.Medium}>
       <Container>
@@ -19,6 +19,6 @@ function AboutExam() {
       </Container>
     </Section>
   );
-}
+};
 
 export default AboutExam;
