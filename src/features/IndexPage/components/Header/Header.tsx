@@ -72,7 +72,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
-    minHeight: '60vh',
   },
   imageWrapper: {
     textAlign: 'center',
