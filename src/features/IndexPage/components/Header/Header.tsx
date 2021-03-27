@@ -1,35 +1,22 @@
-import { useState } from 'react';
-import { Maybe, Qualification } from 'libs/graphql';
+import { GOOGLE_PLAY_URL } from 'config/app';
 
 import Image from 'next/image';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Container,
-  Toolbar,
-  Grid,
-  Typography,
-  Divider,
-  TextField,
-  InputAdornment,
-} from '@material-ui/core';
-import { Search as SearchIcon } from '@material-ui/icons';
-import { Autocomplete } from '@material-ui/lab';
-import ThemeProvider from 'libs/material-ui/ThemeProvider';
+import { Container, Grid, Typography, Divider } from '@material-ui/core';
+import Link from 'common/Link/Link';
+import QualificationSelector, {
+  QualificationSelectorProps,
+} from './QualificationSelector';
 
 interface HeaderProps {
-  qualifications: Qualification[];
+  qualifications: QualificationSelectorProps['qualifications'];
 }
 
 const Header = ({ qualifications = [] }: HeaderProps) => {
-  const [selectedQualification, setSelectedQualification] = useState<
-    Maybe<Qualification>
-  >(null);
   const classes = useStyles();
 
-  console.log(selectedQualification);
   return (
     <header className={classes.header}>
-      <Toolbar />
       <Divider />
       <Container className={classes.container}>
         <div>
@@ -44,37 +31,20 @@ const Header = ({ qualifications = [] }: HeaderProps) => {
                 ubiegłych. Wyszukaj poniżej interesującą Cię kwalifikację i
                 zacznij rozwiązywać testy!
               </Typography>
-              <ThemeProvider cssBaseline={false} paletteType="dark">
-                <Autocomplete
-                  getOptionLabel={option => `${option.name} (${option.code})`}
-                  noOptionsText="Nie znaleziono żadnej kwalifikacji"
-                  clearText="Wyczyść"
-                  onChange={(e, value) => {
-                    setSelectedQualification(value);
-                  }}
-                  renderInput={params => {
-                    return (
-                      <TextField
-                        {...params}
-                        fullWidth
-                        label="Wpisz nazwę kwalifikacji lub jej oznaczenie"
-                        placeholder="Na przykład: EE.08"
-                        variant="outlined"
-                        color="secondary"
-                        InputProps={{
-                          ...params.InputProps,
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <SearchIcon />
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                    );
-                  }}
-                  options={qualifications}
-                />
-              </ThemeProvider>
+              <QualificationSelector qualifications={qualifications} />
+              <Divider className={classes.divider} />
+              <div>
+                <Link
+                  href={GOOGLE_PLAY_URL}
+                  title="Pobierz aplikację na Androida z Google Play"
+                >
+                  <img
+                    className={classes.googlePlayBadge}
+                    src="/images/google-play-badge.svg"
+                    alt="Pobierz aplikację na Androida z Google Play"
+                  />
+                </Link>
+              </div>
             </Grid>
             <Grid item md={5} xs={12} className={classes.imageWrapper}>
               <Image
@@ -93,9 +63,7 @@ const Header = ({ qualifications = [] }: HeaderProps) => {
 
 const useStyles = makeStyles(theme => ({
   header: {
-    color: theme.palette.common.white,
     position: 'relative',
-    backgroundColor: theme.palette.primary.dark,
     overflowX: 'hidden',
   },
   container: {
@@ -104,10 +72,16 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),
-    minHeight: '75vh',
+    minHeight: '60vh',
   },
   imageWrapper: {
     textAlign: 'center',
+  },
+  divider: {
+    marginTop: theme.spacing(5),
+  },
+  googlePlayBadge: {
+    width: '150px',
   },
 }));
 

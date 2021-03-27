@@ -18,7 +18,7 @@ interface IndexPageProps {
 
 const IndexPage = ({ qualifications }: IndexPageProps) => {
   return (
-    <Layout transparentTopBar absoluteTopBar padding={false}>
+    <Layout padding={false}>
       <Header qualifications={qualifications} />
     </Layout>
   );
