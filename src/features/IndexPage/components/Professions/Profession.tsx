@@ -44,26 +44,28 @@ const Profession = ({ profession }: ProfessionProps) => {
                         {qualification.name} ({qualification.code})
                       </strong>{' '}
                       -&gt;{' '}
-                      {QUESTIONS.map(howManyQuestions => {
+                      {QUESTIONS.map((howManyQuestions, index) => {
                         return (
-                          <Link
-                            key={howManyQuestions}
-                            href={{
-                              pathname: Route.TestPage,
-                              query: {
-                                slug: qualification.slug,
-                                questions: howManyQuestions,
-                              },
-                            }}
-                          >
-                            Test {howManyQuestions}{' '}
-                            {polishPlurals(
-                              'pytanie',
-                              'pytania',
-                              'pytań',
-                              howManyQuestions
-                            )}{' '}
-                          </Link>
+                          <span key={howManyQuestions}>
+                            <Link
+                              href={{
+                                pathname: Route.TestPage,
+                                query: {
+                                  slug: qualification.slug,
+                                  questions: howManyQuestions,
+                                },
+                              }}
+                            >
+                              Test {howManyQuestions}{' '}
+                              {polishPlurals(
+                                'pytanie',
+                                'pytania',
+                                'pytań',
+                                howManyQuestions
+                              )}
+                            </Link>
+                            {index + 1 !== QUESTIONS.length ? ' | ' : ''}
+                          </span>
                         );
                       })}
                     </Typography>
@@ -86,6 +88,7 @@ const Profession = ({ profession }: ProfessionProps) => {
 const useStyles = makeStyles(theme => {
   return {
     accordionDetails: {
+      flexDirection: 'column',
       '& > *:not(:last-child)': {
         marginBottom: theme.spacing(1),
       },
