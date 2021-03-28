@@ -12,9 +12,13 @@ export const QUERY_QUALIFICATION = gql`
   }
 `;
 
-export const QUERY_GENERATE_TEST = gql`
-  query generateTest($limit: Int!, $qualificationIDs: [ID!]!) {
-    generateTest(limit: $limit, qualificationIDs: $qualificationIDs) {
+export const QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS = gql`
+  query generateTestAndGetSimilarQualifications(
+    $limitTest: Int!
+    $qualificationID: ID!
+    $limitSuggestions: Int!
+  ) {
+    generateTest(limit: $limitTest, qualificationIDs: [$qualificationID]) {
       id
       content
       image
@@ -28,6 +32,16 @@ export const QUERY_GENERATE_TEST = gql`
       answerDImage
       correctAnswer
       updatedAt
+    }
+    similarQualifications(
+      limit: $limitSuggestions
+      qualificationID: $qualificationID
+    ) {
+      items {
+        id
+        name
+        code
+      }
     }
   }
 `;
