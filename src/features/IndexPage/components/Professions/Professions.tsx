@@ -1,7 +1,7 @@
 import { Profession as ProfessionT } from 'libs/graphql';
 
 import { Container, Typography } from '@material-ui/core';
-import Section, { Size } from '../Section/Section';
+import Section, { Size } from 'common/Section/Section';
 import Profession from './Profession';
 
 export interface ProfessionsProps {

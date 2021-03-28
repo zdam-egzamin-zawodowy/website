@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Container, Grid } from '@material-ui/core';
-import Section, { Size } from '../Section/Section';
+import Section, { Size } from 'common/Section/Section';
 
 const ExamParts = () => {
   const classes = useStyles();

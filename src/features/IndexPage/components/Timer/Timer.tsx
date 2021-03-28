@@ -3,7 +3,7 @@ import { useCountdown } from 'libs/hooks';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, Typography } from '@material-ui/core';
-import Section, { BgColor, Size } from '../Section/Section';
+import Section, { BgColor, Size } from 'common/Section/Section';
 
 export interface TimerProps {
   dateOfTheExam: Date | string;

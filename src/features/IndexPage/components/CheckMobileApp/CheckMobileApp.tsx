@@ -3,7 +3,7 @@ import { GOOGLE_PLAY_URL } from 'config/app';
 
 import { Container, Typography } from '@material-ui/core';
 import Link from 'common/Link/Link';
-import Section, { BgColor } from '../Section/Section';
+import Section, { BgColor } from 'common/Section/Section';
 
 const CheckMobileApp = () => {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Container, Typography } from '@material-ui/core';
-import Section, { Size } from '../Section/Section';
+import Section, { Size } from 'common/Section/Section';
 
 const AboutExam = () => {
   return (
