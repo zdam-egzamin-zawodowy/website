@@ -1,5 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { Answer, Qualification, Question as QuestionT } from 'libs/graphql';
+import clsx from 'clsx';
+import {
+  Answer,
+  Qualification,
+  Question as QuestionT,
+  createClient,
+  Query,
+  QueryGenerateTestArgs,
+} from 'libs/graphql';
+import { QUERY_GENERATE_TEST } from './queries';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -16,7 +25,7 @@ import TabPanel from './TabPanel';
 import Question from './Question';
 import Navigation from './Navigation';
 import Summary from './Summary';
-import clsx from 'clsx';
+import FixedSpinner from './FixedSpinner';
 
 export interface TestProps {
   initialQuestions: QuestionT[];
@@ -25,6 +34,7 @@ export interface TestProps {
 
 const Test = ({ initialQuestions, qualification }: TestProps) => {
   const headingRef = useRef<HTMLSpanElement | null>(null);
+  const [isFetching, setIsFetching] = useState(false);
   const [questions, setQuestions] = useState(initialQuestions);
   const [selectedAnswers, setSelectedAnswers] = useState<Answer[]>(
     new Array(initialQuestions.length).fill('')
@@ -44,12 +54,29 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
     }
   }, [currentTab]);
 
-  const handleReset = () => {
-    setStartedAt(new Date());
-    setEndedAt(new Date());
-    setSelectedAnswers(new Array(initialQuestions.length).fill(''));
-    setCurrentTab(0);
-    setReviewMode(false);
+  const handleReset = async () => {
+    try {
+      setIsFetching(true);
+      const { generateTest: newQuestions } = await createClient().request<
+        Pick<Query, 'generateTest'>,
+        QueryGenerateTestArgs
+      >(QUERY_GENERATE_TEST, {
+        limit: questions.length,
+        qualificationIDs: [qualification.id],
+      });
+      if (Array.isArray(newQuestions)) {
+        setQuestions(newQuestions);
+      }
+      setStartedAt(new Date());
+      setEndedAt(new Date());
+      setSelectedAnswers(
+        new Array((newQuestions ?? initialQuestions).length).fill('')
+      );
+      setCurrentTab(0);
+      setReviewMode(false);
+    } catch (e) {}
+
+    setIsFetching(false);
   };
 
   const handleFinish = () => {
@@ -60,6 +87,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
 
   return (
     <Section>
+      {isFetching && <FixedSpinner />}
       <Container>
         <header>
           <Typography ref={headingRef} align="center" variant="h1" gutterBottom>
