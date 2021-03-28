@@ -16,12 +16,12 @@ export interface QuestionProps {
   reviewMode: boolean;
 }
 
-function Question({
+const Question = ({
   question,
   answer,
   onChangeAnswer,
   reviewMode,
-}: QuestionProps) {
+}: QuestionProps) => {
   const classes = useStyles();
   return (
     <div className={classes.question}>
@@ -109,7 +109,7 @@ function Question({
       })}
     </div>
   );
-}
+};
 
 const useStyles = makeStyles(theme => {
   return {

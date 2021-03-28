@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Answer, Qualification, Question as QuestionT } from 'libs/graphql';
 
 import {
@@ -13,6 +13,8 @@ import {
 import Section from 'common/Section/Section';
 import TabPanel from './TabPanel';
 import Question from './Question';
+import Navigation from './Navigation';
+import Summary from './Summary';
 
 export interface TestProps {
   initialQuestions: QuestionT[];
@@ -20,19 +22,47 @@ export interface TestProps {
 }
 
 const Test = ({ initialQuestions, qualification }: TestProps) => {
+  const headingRef = useRef<HTMLSpanElement | null>(null);
   const [questions, setQuestions] = useState(initialQuestions);
   const [selectedAnswers, setSelectedAnswers] = useState<Answer[]>(
     new Array(initialQuestions.length).fill('')
   );
   const [currentTab, setCurrentTab] = useState(0);
   const [reviewMode, setReviewMode] = useState(false);
+  const [startedAt, setStartedAt] = useState(new Date());
+  const [endedAt, setEndedAt] = useState(new Date());
+
+  useEffect(() => {
+    if (headingRef.current?.scrollIntoView) {
+      headingRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [currentTab]);
+
+  const handleReset = () => {
+    setStartedAt(new Date());
+    setEndedAt(new Date());
+    setSelectedAnswers(new Array(initialQuestions.length).fill(''));
+    setCurrentTab(0);
+    setReviewMode(false);
+  };
+
+  const handleFinish = () => {
+    setEndedAt(new Date());
+    setCurrentTab(currentTab => currentTab + 1);
+    setReviewMode(true);
+  };
 
   return (
     <Section>
       <Container>
-        <Typography align="center" variant="h1" gutterBottom>
-          Kwalifikacja <strong>{qualification.code}</strong>
-        </Typography>
+        <header>
+          <Typography ref={headingRef} align="center" variant="h1" gutterBottom>
+            Kwalifikacja <strong>{qualification.code}</strong>
+          </Typography>
+        </header>
         {questions.length === 0 ? (
           <Typography align="center" variant="h2">
             Do tej kwalifikacji nie zostały dodane żadne pytania.
@@ -57,7 +87,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
             </AppBar>
             <Box padding={3}>
               {questions.map((question, index) => (
-                <TabPanel key={question.id} value={index} index={index}>
+                <TabPanel key={question.id} value={currentTab} index={index}>
                   <Question
                     question={question}
                     answer={selectedAnswers[index]}
@@ -72,6 +102,29 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
                   />
                 </TabPanel>
               ))}
+              <TabPanel value={currentTab} index={questions.length}>
+                <Summary
+                  answers={selectedAnswers}
+                  questions={questions}
+                  reviewMode={reviewMode}
+                  startedAt={startedAt}
+                  endedAt={endedAt}
+                />
+              </TabPanel>
+              <Navigation
+                hasPreviousTab={currentTab !== 0}
+                hasNextTab={
+                  currentTab + 1 !== questions.length + (reviewMode ? 1 : 0)
+                }
+                onRequestPrevTab={() => setCurrentTab(currentTab - 1)}
+                onRequestNextTab={() => setCurrentTab(currentTab + 1)}
+                isLastQuestion={
+                  currentTab + 1 === questions.length + (reviewMode ? 1 : 0)
+                }
+                reviewMode={reviewMode}
+                onReset={handleReset}
+                onFinish={handleFinish}
+              />
             </Box>
           </Paper>
         )}

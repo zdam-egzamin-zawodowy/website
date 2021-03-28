@@ -7,7 +7,7 @@ export type DifferenceBetweenDates = {
   seconds: number;
 };
 
-const calculateDifference = (
+export const calculateDifferenceBetweenTwoDates = (
   dateLeft: Date,
   dateRight: Date
 ): DifferenceBetweenDates => {
@@ -23,12 +23,12 @@ const calculateDifference = (
 
 export const useCountdown = (dateRight: Date): DifferenceBetweenDates => {
   const [difference, setDifference] = useState<DifferenceBetweenDates>(
-    calculateDifference(new Date(), dateRight)
+    calculateDifferenceBetweenTwoDates(new Date(), dateRight)
   );
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setDifference(calculateDifference(new Date(), dateRight));
+      setDifference(calculateDifferenceBetweenTwoDates(new Date(), dateRight));
     }, 1000);
     return () => {
       clearTimeout(timeout);

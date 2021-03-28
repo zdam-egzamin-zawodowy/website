@@ -20,6 +20,7 @@ export const QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS = gql`
   ) {
     generateTest(limit: $limitTest, qualificationIDs: [$qualificationID]) {
       id
+      from
       content
       image
       answerA
