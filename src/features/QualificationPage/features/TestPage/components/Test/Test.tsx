@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Answer, Qualification, Question as QuestionT } from 'libs/graphql';
 
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Container,
   Paper,
@@ -15,6 +16,7 @@ import TabPanel from './TabPanel';
 import Question from './Question';
 import Navigation from './Navigation';
 import Summary from './Summary';
+import clsx from 'clsx';
 
 export interface TestProps {
   initialQuestions: QuestionT[];
@@ -31,6 +33,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   const [reviewMode, setReviewMode] = useState(false);
   const [startedAt, setStartedAt] = useState(new Date());
   const [endedAt, setEndedAt] = useState(new Date());
+  const classes = useStyles();
 
   useEffect(() => {
     if (headingRef.current?.scrollIntoView) {
@@ -79,7 +82,22 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
               >
                 {questions.map((question, index) => {
                   return (
-                    <Tab key={question.id} label={`Pytanie ${index + 1}`} />
+                    <Tab
+                      key={question.id}
+                      className={clsx(
+                        reviewMode
+                          ? {
+                              [classes.correct]:
+                                question.correctAnswer ===
+                                selectedAnswers[index],
+                              [classes.incorrect]:
+                                question.correctAnswer !==
+                                selectedAnswers[index],
+                            }
+                          : {}
+                      )}
+                      label={`Pytanie ${index + 1}`}
+                    />
                   );
                 })}
                 <Tab label="Podsumowanie" disabled={!reviewMode} />
@@ -132,5 +150,16 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
     </Section>
   );
 };
+
+const useStyles = makeStyles(theme => {
+  return {
+    incorrect: {
+      color: `${theme.palette.error.main} !important`,
+    },
+    correct: {
+      color: `${theme.palette.success.main} !important`,
+    },
+  };
+});
 
 export default Test;
