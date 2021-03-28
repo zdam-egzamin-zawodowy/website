@@ -52,6 +52,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
                     <Tab key={question.id} label={`Pytanie ${index + 1}`} />
                   );
                 })}
+                <Tab label="Podsumowanie" disabled={!reviewMode} />
               </Tabs>
             </AppBar>
             <Box padding={3}>

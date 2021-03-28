@@ -3,9 +3,11 @@ import clsx from 'clsx';
 import buildURL from 'utils/buildURL';
 import { Answer, Question as QuestionT } from 'libs/graphql';
 
+import Image from 'next/image';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import ImageWrapper from './ImageWrapper';
 
 export interface QuestionProps {
   question: QuestionT;
@@ -37,9 +39,14 @@ function Question({
         })}
       </Typography>
       {question.image && (
-        <Typography align="center">
-          <img src={buildURL('cdn', question.image)} alt={question.content} />
-        </Typography>
+        <ImageWrapper height="300px">
+          <Image
+            layout="fill"
+            src={buildURL('cdn', question.image)}
+            alt={question.content}
+            objectFit="contain"
+          />
+        </ImageWrapper>
       )}
       {reviewMode && (
         <div className={classes.alertContainer}>
@@ -78,19 +85,24 @@ function Question({
             onClick={() => onChangeAnswer(a)}
             color={'primary'}
           >
-            {`${upper}. `}
-            {image ? (
-              <img
-                src={buildURL('cdn', image)}
-                alt={answerContent ?? `Odpowiedź ${upper}.`}
-              />
-            ) : (
-              answerContent.split('\n').map(fragment => (
+            <span>
+              {`${upper}. `}
+              {answerContent.split('\n').map(fragment => (
                 <Fragment key={fragment}>
                   {fragment}
                   <br />
                 </Fragment>
-              ))
+              ))}
+            </span>
+            {image && (
+              <ImageWrapper height="300px">
+                <Image
+                  layout="fill"
+                  src={buildURL('cdn', image)}
+                  alt={answerContent ?? `Odpowiedź ${upper}.`}
+                  objectFit="contain"
+                />
+              </ImageWrapper>
             )}
           </Button>
         );
@@ -104,9 +116,6 @@ const useStyles = makeStyles(theme => {
     question: {
       '& > *:not(:last-child)': {
         marginBottom: theme.spacing(2),
-      },
-      '& img': {
-        maxWidth: '100%',
       },
     },
     button: {

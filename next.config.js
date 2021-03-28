@@ -3,4 +3,7 @@ module.exports = {
     locales: ['pl'],
     defaultLocale: 'pl',
   },
+  images: {
+    domains: ['localhost', 'cdn.zdamegzaminzawodowy.pl'],
+  },
 };
