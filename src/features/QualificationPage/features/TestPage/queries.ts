@@ -41,6 +41,7 @@ export const QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS = gql`
         id
         name
         code
+        slug
       }
     }
   }

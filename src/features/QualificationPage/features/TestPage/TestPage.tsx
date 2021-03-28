@@ -18,6 +18,7 @@ import {
 
 import Layout from 'common/Layout/Layout';
 import SEO from 'common/SEO/SEO';
+import Suggestions from './components/Suggestions/Suggestions';
 
 export type TestPageParams = {
   slug: string;
@@ -39,6 +40,7 @@ const TestPage = ({ questions, suggestions, qualification }: TestPageProps) => {
           questions.length
         } ${polishPlurals('pytanie', 'pytania', 'pytań', questions.length)}`}
       />
+      <Suggestions suggestions={suggestions} />
     </Layout>
   );
 };
