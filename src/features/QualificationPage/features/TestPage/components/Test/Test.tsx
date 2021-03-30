@@ -26,6 +26,7 @@ import Question from './Question';
 import Navigation from './Navigation';
 import Summary from './Summary';
 import FixedSpinner from './FixedSpinner';
+import { usePrompt } from '../../../../../../libs/hooks';
 
 export interface TestProps {
   initialQuestions: QuestionT[];
@@ -44,7 +45,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   const [startedAt, setStartedAt] = useState(new Date());
   const [endedAt, setEndedAt] = useState(new Date());
   const classes = useStyles();
-
+  usePrompt(!reviewMode);
   useEffect(() => {
     if (headingRef.current?.scrollIntoView) {
       headingRef.current?.scrollIntoView({
