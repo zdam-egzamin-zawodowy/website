@@ -119,7 +119,7 @@ function PrivacyPolicyPage() {
         </Typography>
         <Typography component="ol">
           <li>
-            Serwis jest hostowany (technicznie utrzymywany) na serwera
+            Serwis jest hostowany (technicznie utrzymywany) na serwerach
             operatora: OVH
           </li>
         </Typography>
