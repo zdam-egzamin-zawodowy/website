@@ -9,6 +9,9 @@ export const usePrompt = (when: boolean) => {
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleUnload);
+    };
   }, []);
 
   const handleUnload = useCallback((event: BeforeUnloadEvent) => {
