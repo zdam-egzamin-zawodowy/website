@@ -1,4 +1,5 @@
 import { AUTHOR } from 'config/app';
+import { Route } from 'config/routing';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Container } from '@material-ui/core';
@@ -14,6 +15,14 @@ const Footer = () => {
             zdamegzaminzawodowy.pl &copy; {new Date().getFullYear()}
           </Typography>
           <div className={classes.links}>
+            <Link
+              color="inherit"
+              underline="hover"
+              title="Polityka prywatności"
+              href={Route.PrivacyPolicyPage}
+            >
+              Polityka prywatności
+            </Link>
             <Link
               color="inherit"
               underline="hover"
@@ -40,6 +49,12 @@ const useStyles = makeStyles(theme => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      [theme.breakpoints.down('xs')]: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        textAlign: 'center',
+      },
     },
     links: {
       '& > *:not(:last-child)': {
