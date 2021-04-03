@@ -33,7 +33,6 @@ export interface TestPageProps {
 }
 
 const TestPage = ({ questions, suggestions, qualification }: TestPageProps) => {
-  console.log(questions, suggestions, qualification);
   return (
     <Layout>
       <SEO

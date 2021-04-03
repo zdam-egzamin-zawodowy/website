@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
+import { useUpdateEffect } from 'react-use';
 import clsx from 'clsx';
 import {
   Answer,
@@ -46,7 +47,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   const [endedAt, setEndedAt] = useState(new Date());
   const classes = useStyles();
   usePrompt(!reviewMode);
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (headingRef.current?.scrollIntoView) {
       headingRef.current?.scrollIntoView({
         behavior: 'smooth',
@@ -54,6 +55,24 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
       });
     }
   }, [currentTab]);
+  useUpdateEffect(() => {
+    resetValues(initialQuestions);
+  }, [qualification, initialQuestions]);
+
+  const resetValues = (
+    questions?: Pick<Query, 'generateTest'>['generateTest']
+  ) => {
+    if (Array.isArray(questions)) {
+      setQuestions(questions);
+    }
+    setStartedAt(new Date());
+    setEndedAt(new Date());
+    setSelectedAnswers(
+      new Array((questions ?? initialQuestions).length).fill('')
+    );
+    setCurrentTab(0);
+    setReviewMode(false);
+  };
 
   const handleReset = async () => {
     try {
@@ -65,16 +84,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
         limit: questions.length,
         qualificationIDs: [qualification.id],
       });
-      if (Array.isArray(newQuestions)) {
-        setQuestions(newQuestions);
-      }
-      setStartedAt(new Date());
-      setEndedAt(new Date());
-      setSelectedAnswers(
-        new Array((newQuestions ?? initialQuestions).length).fill('')
-      );
-      setCurrentTab(0);
-      setReviewMode(false);
+      resetValues(newQuestions);
     } catch (e) {}
 
     setIsFetching(false);
