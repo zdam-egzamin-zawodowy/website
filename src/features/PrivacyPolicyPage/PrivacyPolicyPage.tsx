@@ -269,6 +269,7 @@ function PrivacyPolicyPage() {
             <Link
               title="Google Ads"
               href="https://www.google.com/ads/preferences/"
+              style={{ wordBreak: 'break-all' }}
             >
               https://www.google.com/ads/preferences/
             </Link>
