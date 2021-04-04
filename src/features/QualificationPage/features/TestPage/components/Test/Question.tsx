@@ -23,6 +23,7 @@ const Question = ({
   reviewMode,
 }: QuestionProps) => {
   const classes = useStyles();
+  const updatedAt = new Date(question.updatedAt).getTime();
   return (
     <div className={classes.question}>
       {question.from && (
@@ -42,7 +43,7 @@ const Question = ({
         <ImageWrapper height="300px">
           <Image
             layout="fill"
-            src={buildURL('cdn', question.image)}
+            src={buildURL('cdn', question.image) + `?${updatedAt}`}
             alt={question.content}
             objectFit="contain"
           />
@@ -98,7 +99,7 @@ const Question = ({
               <ImageWrapper height="300px">
                 <Image
                   layout="fill"
-                  src={buildURL('cdn', image)}
+                  src={buildURL('cdn', image) + `?${updatedAt}`}
                   alt={answerContent ?? `Odpowiedź ${upper}.`}
                   objectFit="contain"
                 />
