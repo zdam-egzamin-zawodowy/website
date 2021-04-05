@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request';
 
 export const QUERY_GENERATE_TEST = gql`
-  query generateTestAndGetSimilarQualifications(
+  query generateTest(
     $limit: Int!
     $qualificationIDs: [ID!]!
   ) {
