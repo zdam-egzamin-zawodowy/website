@@ -16,6 +16,8 @@ export interface QuestionProps {
   reviewMode: boolean;
 }
 
+const ANSWERS = Object.values(Answer);
+
 const Question = ({
   question,
   answer,
@@ -61,7 +63,7 @@ const Question = ({
           )}
         </div>
       )}
-      {Object.values(Answer).map(a => {
+      {ANSWERS.map(a => {
         const upper = a.toUpperCase();
         const image = question[
           `answer${upper}Image` as keyof QuestionT
