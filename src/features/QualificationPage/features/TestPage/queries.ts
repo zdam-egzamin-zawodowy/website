@@ -17,6 +17,7 @@ export const QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS = gql`
     $limitTest: Int!
     $qualificationID: ID!
     $limitSuggestions: Int!
+    $skipSuggestions: Boolean!
   ) {
     generateTest(limit: $limitTest, qualificationIDs: [$qualificationID]) {
       id
@@ -37,7 +38,7 @@ export const QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS = gql`
     similarQualifications(
       limit: $limitSuggestions
       qualificationID: $qualificationID
-    ) {
+    ) @skip(if: $skipSuggestions) {
       items {
         id
         name

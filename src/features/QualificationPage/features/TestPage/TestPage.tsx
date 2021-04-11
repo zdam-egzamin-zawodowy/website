@@ -6,7 +6,6 @@ import {
   Query,
   QueryQualificationArgs,
   Question,
-  Scalars,
 } from 'libs/graphql';
 import resolveAs from 'utils/resolveAs';
 import { QUESTIONS } from 'config/app';
@@ -15,6 +14,7 @@ import {
   QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS,
   QUERY_QUALIFICATION,
 } from './queries';
+import { QueryGenerateTestSimilarQualificationsArgs } from './types';
 
 import Layout from 'common/Layout/Layout';
 import SEO from 'common/SEO/SEO';
@@ -51,12 +51,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: 'blocking',
     paths: [],
   };
-};
-
-type QueryGenerateTestSimilarQualificationsArgs = {
-  limitTest: Scalars['Int'];
-  qualificationID: Scalars['ID'];
-  limitSuggestions: Scalars['Int'];
 };
 
 export const getStaticProps: GetStaticProps<
@@ -111,6 +105,7 @@ export const getStaticProps: GetStaticProps<
       limitSuggestions: 6,
       qualificationID: qualification.id,
       limitTest: limit,
+      skipSuggestions: false,
     });
     if (Array.isArray(generateTest)) {
       props.questions = generateTest;

@@ -1,15 +1,16 @@
 import { useState, useRef } from 'react';
 import { useUpdateEffect } from 'react-use';
 import clsx from 'clsx';
+import { usePrompt } from 'libs/hooks';
 import {
   Answer,
   Qualification,
   Question as QuestionT,
   createClient,
   Query,
-  QueryGenerateTestArgs,
 } from 'libs/graphql';
-import { QUERY_GENERATE_TEST } from './queries';
+import { QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS } from '../../queries';
+import { QueryGenerateTestSimilarQualificationsArgs } from '../../types';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -27,7 +28,6 @@ import Question from './Question';
 import Navigation from './Navigation';
 import Summary from './Summary';
 import FixedSpinner from './FixedSpinner';
-import { usePrompt } from '../../../../../../libs/hooks';
 
 export interface TestProps {
   initialQuestions: QuestionT[];
@@ -79,10 +79,12 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
       setIsFetching(true);
       const { generateTest: newQuestions } = await createClient().request<
         Pick<Query, 'generateTest'>,
-        QueryGenerateTestArgs
-      >(QUERY_GENERATE_TEST, {
-        limit: questions.length,
-        qualificationIDs: [qualification.id],
+        QueryGenerateTestSimilarQualificationsArgs
+      >(QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS, {
+        limitTest: questions.length,
+        limitSuggestions: 0,
+        skipSuggestions: true,
+        qualificationID: qualification.id,
       });
       resetValues(newQuestions);
     } catch (e) {}
