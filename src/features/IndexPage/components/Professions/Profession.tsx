@@ -36,7 +36,7 @@ const Profession = ({ profession }: ProfessionProps) => {
             const qualifications = qualificationsByFormula[formula];
             return (
               <div key={formula}>
-                <Typography variant="h5">{formula}</Typography>
+                <Typography variant="h5">Formuła {formula}</Typography>
                 {qualifications.map(qualification => {
                   return (
                     <Typography key={qualification.id}>
