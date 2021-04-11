@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
 import { Maybe, Qualification } from 'libs/graphql';
+import { SECTION_ID as PROFESSIONS_SECTION_ID } from '../Professions/Professions';
 
+import { makeStyles } from '@material-ui/core/styles';
 import { Autocomplete } from '@material-ui/lab';
 import { InputAdornment, TextField } from '@material-ui/core';
 import { Search as SearchIcon } from '@material-ui/icons';
+import Link from 'common/Link/Link';
 import TestForm from './TestForm';
-import { makeStyles } from '@material-ui/core/styles';
 
 export interface QualificationSelectorProps {
   qualifications: Qualification[];
 }
+
+const PROFESSIONS_SECTION_SELECTOR = '#' + PROFESSIONS_SECTION_ID;
 
 const QualificationSelector = ({
   qualifications,
@@ -18,6 +22,19 @@ const QualificationSelector = ({
     Maybe<Qualification>
   >(null);
   const classes = useStyles();
+
+  const scrollToProfessions = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const element = document.querySelector<HTMLDivElement>(
+      PROFESSIONS_SECTION_SELECTOR
+    );
+    if (element?.scrollIntoView) {
+      e.preventDefault();
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  };
 
   return (
     <div className={classes.container}>
@@ -49,6 +66,13 @@ const QualificationSelector = ({
         }}
         options={qualifications}
       />
+      <Link
+        href={PROFESSIONS_SECTION_SELECTOR}
+        onClick={scrollToProfessions}
+        title="Przejdź do listy dostępnych zawodów i kwalifikacji."
+      >
+        Przejdź do listy dostępnych zawodów i kwalifikacji.
+      </Link>
       {selectedQualification && (
         <TestForm qualification={selectedQualification} />
       )}

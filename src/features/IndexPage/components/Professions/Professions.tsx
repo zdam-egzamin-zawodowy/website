@@ -8,9 +8,11 @@ export interface ProfessionsProps {
   professions: ProfessionT[];
 }
 
+export const SECTION_ID = 'professions';
+
 const Professions = ({ professions }: ProfessionsProps) => {
   return (
-    <Section size={Size.Medium}>
+    <Section id={SECTION_ID} size={Size.Medium}>
       <Container>
         <Typography align="center" variant="h2" gutterBottom>
           Lista dostępnych zawodów i kwalifikacji
