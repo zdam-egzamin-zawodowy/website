@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "codegen": "graphql-codegen"
   },
@@ -19,6 +20,7 @@
     "graphql-request": "^3.4.0",
     "lodash": "^4.17.21",
     "next": "10.0.9",
+    "next-sitemap": "^1.6.25",
     "polish-plurals": "^1.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
