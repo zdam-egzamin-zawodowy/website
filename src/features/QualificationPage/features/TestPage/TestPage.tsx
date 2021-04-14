@@ -53,6 +53,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
+const SUGGESTIONS_LIMIT = 6;
+const REVALIDATE_ERROR = 600;
+const REVALIDATE_SUCCESS = 10;
+
 export const getStaticProps: GetStaticProps<
   TestPageProps,
   TestPageParams
@@ -69,7 +73,7 @@ export const getStaticProps: GetStaticProps<
     },
   };
 
-  if (!params) return { notFound: true, revalidate: 600 };
+  if (!params) return { notFound: true, revalidate: REVALIDATE_ERROR };
   const limit = parseInt(params.limit);
   const slug = params.slug.trim();
   if (
@@ -84,7 +88,7 @@ export const getStaticProps: GetStaticProps<
           query: { ...params, limit: QUESTIONS[QUESTIONS.length - 1] },
         }),
       },
-      revalidate: 600,
+      revalidate: REVALIDATE_ERROR,
     };
   }
 
@@ -102,7 +106,7 @@ export const getStaticProps: GetStaticProps<
       Pick<Query, 'generateTest' | 'similarQualifications'>,
       QueryGenerateTestSimilarQualificationsArgs
     >(QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS, {
-      limitSuggestions: 6,
+      limitSuggestions: SUGGESTIONS_LIMIT,
       qualificationID: qualification.id,
       limitTest: limit,
       skipSuggestions: false,
@@ -115,10 +119,10 @@ export const getStaticProps: GetStaticProps<
     }
     return {
       props,
-      revalidate: 20,
+      revalidate: REVALIDATE_SUCCESS,
     };
   } catch (e) {
-    return { notFound: true, revalidate: 600 };
+    return { notFound: true, revalidate: REVALIDATE_ERROR };
   }
 };
 
