@@ -55,7 +55,7 @@ const getQualificationsFromProfessions = (
   return Array.from(map.values());
 };
 
-export const REVALIDATE = 60;
+export const REVALIDATE = 30;
 
 export const getStaticProps: GetStaticProps = async () => {
   const pageProps: IndexPageProps = {
