@@ -1,5 +1,5 @@
 import '@kichiyaki/roboto';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import ThemeProvider from 'libs/material-ui/ThemeProvider';
 

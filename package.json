@@ -7,6 +7,7 @@
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
+    "start:production": "NODE_ENV=production yarn run start",
     "codegen": "graphql-codegen"
   },
   "dependencies": {
