@@ -1,10 +1,14 @@
+const CDN = process.env.NEXT_PUBLIC_CDN_URI
+  ? new URL(process.env.NEXT_PUBLIC_CDN_URI)
+  : '';
+
 module.exports = {
   i18n: {
     locales: ['pl'],
     defaultLocale: 'pl',
   },
   images: {
-    domains: ['localhost', 'cdn.zdamegzaminzawodowy.pl'],
+    domains: CDN instanceof URL ? ['localhost', CDN.hostname] : ['localhost'],
   },
   async headers() {
     return [
