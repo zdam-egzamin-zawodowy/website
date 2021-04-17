@@ -6,7 +6,8 @@ jobs:
     working_directory: ~/zdamegzaminzawodowy
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.2
       # start proprietary DB using private Docker image
       # with credentials stored in the UI
       - run: |
