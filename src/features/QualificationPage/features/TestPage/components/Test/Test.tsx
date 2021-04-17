@@ -1,26 +1,28 @@
-import { useState, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useUpdateEffect } from 'react-use';
 import clsx from 'clsx';
 import { usePrompt } from 'libs/hooks';
 import {
   Answer,
-  Qualification,
-  Question as QuestionT,
   createClient,
+  Qualification,
   Query,
+  Question as QuestionT,
 } from 'libs/graphql';
+import { Event } from 'config/analytics';
+import gtag from 'utils/gtag';
 import { QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS } from '../../queries';
 import { QueryGenerateTestSimilarQualificationsArgs } from '../../types';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  AppBar,
+  Box,
   Container,
   Paper,
   Tab,
-  Typography,
   Tabs,
-  AppBar,
-  Box,
+  Typography,
 } from '@material-ui/core';
 import Section from 'common/Section/Section';
 import TabPanel from './TabPanel';
@@ -47,6 +49,20 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   const [endedAt, setEndedAt] = useState(new Date());
   const classes = useStyles();
   usePrompt(!reviewMode);
+  const analyticsParams = useMemo(
+    () => ({
+      qualificationID: qualification.id.toString(),
+      questions: questions.length.toString(),
+    }),
+    [qualification, questions]
+  );
+  useEffect(() => {
+    gtag(
+      'event',
+      reviewMode ? Event.FinishTest : Event.StartTest,
+      analyticsParams
+    );
+  }, [reviewMode, analyticsParams]);
   useUpdateEffect(() => {
     if (headingRef.current?.scrollIntoView) {
       headingRef.current?.scrollIntoView({
@@ -74,6 +90,20 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
     setReviewMode(false);
   };
 
+  const handleSelectAnswer = (index: number, newAnswer: Answer) => {
+    setSelectedAnswers(answers =>
+      answers.map((oldAnswer, index2) =>
+        index2 === index ? newAnswer : oldAnswer
+      )
+    );
+    gtag('event', Event.SelectAnswer, {
+      qualificationID: analyticsParams.qualificationID,
+      questionID: questions[index].id.toString(),
+      answer: newAnswer,
+      correct: questions[index].correctAnswer === newAnswer ? '1' : '0',
+    });
+  };
+
   const handleReset = async () => {
     try {
       setIsFetching(true);
@@ -97,7 +127,6 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
     setCurrentTab(currentTab => currentTab + 1);
     setReviewMode(true);
   };
-
   return (
     <Section>
       {isFetching && <FixedSpinner />}
@@ -150,13 +179,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
                   <Question
                     question={question}
                     answer={selectedAnswers[index]}
-                    onChangeAnswer={newAnswer =>
-                      setSelectedAnswers(answers =>
-                        answers.map((oldAnswer, index2) =>
-                          index2 === index ? newAnswer : oldAnswer
-                        )
-                      )
-                    }
+                    onSelectAnswer={answer => handleSelectAnswer(index, answer)}
                     reviewMode={reviewMode}
                   />
                 </TabPanel>

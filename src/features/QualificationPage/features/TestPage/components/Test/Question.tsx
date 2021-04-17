@@ -13,7 +13,7 @@ import ImageWrapper from './ImageWrapper';
 export interface QuestionProps {
   question: QuestionT;
   answer: Answer;
-  onChangeAnswer: (answer: Answer) => void;
+  onSelectAnswer: (answer: Answer) => void;
   reviewMode: boolean;
 }
 
@@ -22,7 +22,7 @@ const ANSWERS = Object.values(Answer);
 const Question = ({
   question,
   answer,
-  onChangeAnswer,
+  onSelectAnswer,
   reviewMode,
 }: QuestionProps) => {
   const classes = useStyles();
@@ -86,7 +86,7 @@ const Question = ({
                 : 'outlined'
             }
             fullWidth
-            onClick={() => onChangeAnswer(a)}
+            onClick={() => onSelectAnswer(a)}
             color={'primary'}
           >
             <span>
