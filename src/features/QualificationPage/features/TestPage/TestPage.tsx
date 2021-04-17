@@ -41,7 +41,7 @@ const TestPage = ({ questions, suggestions, qualification }: TestPageProps) => {
         } ${polishPlurals('pytanie', 'pytania', 'pytań', questions.length)}`}
       />
       <Test initialQuestions={questions} qualification={qualification} />
-      <Suggestions suggestions={suggestions} />
+      {suggestions.length > 0 && <Suggestions suggestions={suggestions} />}
     </Layout>
   );
 };

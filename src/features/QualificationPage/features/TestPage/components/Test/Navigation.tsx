@@ -59,7 +59,7 @@ const Navigation = ({
             Zakończ test
           </Button>
         )}
-        {isLastQuestion && reviewMode && (
+        {reviewMode && (
           <Button startIcon={<RefreshIcon />} onClick={onReset}>
             Rozpocznij od nowa
           </Button>
