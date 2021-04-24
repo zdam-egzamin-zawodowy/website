@@ -8,7 +8,8 @@
     "postbuild": "next-sitemap",
     "start": "next start",
     "start:production": "NODE_ENV=production yarn run start",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "lint": "eslint . --ext ts --ext tsx --ext js"
   },
   "dependencies": {
     "@kichiyaki/roboto": "^1.0.0",

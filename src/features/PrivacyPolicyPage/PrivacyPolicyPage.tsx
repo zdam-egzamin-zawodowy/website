@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, Typography, Divider, Link } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import Layout from 'common/Layout/Layout';
-import SEO from 'common/SEO/SEO';
+import Seo from 'common/Seo/Seo';
 
 const DESCRIPTION =
   'Polityka prywatności opisuje zasady przetwarzania przez zdamegzaminzawodowy.pl informacji na Twój temat, w tym danych osobowych oraz ciasteczek, czyli tzw. cookies.';
@@ -13,7 +13,7 @@ function PrivacyPolicyPage() {
   const classes = useStyles();
   return (
     <Layout>
-      <SEO title="Polityka prywatności" description={DESCRIPTION} />
+      <Seo title="Polityka prywatności" description={DESCRIPTION} />
       <Container component="article">
         <Typography
           className={classes.paddingVertical}

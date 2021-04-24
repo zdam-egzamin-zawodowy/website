@@ -4,7 +4,7 @@ import { ErrorProps } from 'next/error';
 import { Box, Typography } from '@material-ui/core';
 import Layout from 'common/Layout/Layout';
 import Section from 'common/Section/Section';
-import SEO from 'common/SEO/SEO';
+import Seo from 'common/Seo/Seo';
 
 const getTitleForStatusCode = (statusCode: number): string => {
   switch (statusCode) {
@@ -19,7 +19,7 @@ const ErrorPage: NextPage<ErrorProps> = ({ statusCode, title }: ErrorProps) => {
   const _title = title ?? getTitleForStatusCode(statusCode);
   return (
     <Layout>
-      <SEO title={_title} />
+      <Seo title={_title} />
       <Box
         minHeight="80vh"
         display="flex"

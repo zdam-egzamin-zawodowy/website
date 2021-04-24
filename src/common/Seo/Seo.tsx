@@ -13,7 +13,7 @@ export interface SEOProps {
   description?: string;
 }
 
-const SEO = ({ title, description = DEFAULT_DESCRIPTION }: SEOProps) => {
+const Seo = ({ title, description = DEFAULT_DESCRIPTION }: SEOProps) => {
   const { asPath } = useRouter();
   const formattedTitle = title ? `${title} | ${NAME}` : NAME;
   return (
@@ -51,4 +51,4 @@ const SEO = ({ title, description = DEFAULT_DESCRIPTION }: SEOProps) => {
   );
 };
 
-export default SEO;
+export default Seo;

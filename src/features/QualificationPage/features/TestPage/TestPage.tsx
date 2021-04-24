@@ -17,7 +17,7 @@ import {
 import { QueryGenerateTestSimilarQualificationsArgs } from './types';
 
 import Layout from 'common/Layout/Layout';
-import SEO from 'common/SEO/SEO';
+import Seo from 'common/Seo/Seo';
 import Suggestions from './components/Suggestions/Suggestions';
 import Test from './components/Test/Test';
 
@@ -35,7 +35,7 @@ export interface TestPageProps {
 const TestPage = ({ questions, suggestions, qualification }: TestPageProps) => {
   return (
     <Layout>
-      <SEO
+      <Seo
         title={`${qualification.code} - Test ${
           questions.length
         } ${polishPlurals('pytanie', 'pytania', 'pytań', questions.length)}`}
