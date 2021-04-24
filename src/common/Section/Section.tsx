@@ -32,12 +32,12 @@ const Section = ({
   return (
     <section
       className={clsx(className, classes.section, {
-        ['is-medium']: size === Size.Medium,
-        ['is-large']: size === Size.Large,
-        ['is-primary']: bgColor === BgColor.Primary,
-        ['is-primary-dark']: bgColor === BgColor.PrimaryDark,
-        ['is-secondary']: bgColor === BgColor.Secondary,
-        ['is-secondary-dark']: bgColor === BgColor.SecondaryDark,
+        'is-medium': size === Size.Medium,
+        'is-large': size === Size.Large,
+        'is-primary': bgColor === BgColor.Primary,
+        'is-primary-dark': bgColor === BgColor.PrimaryDark,
+        'is-secondary': bgColor === BgColor.Secondary,
+        'is-secondary-dark': bgColor === BgColor.SecondaryDark,
       })}
       {...rest}
     >

@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState } from 'react';
+import { useState } from 'react';
 import { Maybe, Qualification } from 'libs/graphql';
 import { SECTION_ID as PROFESSIONS_SECTION_ID } from '../Professions/Professions';
 
