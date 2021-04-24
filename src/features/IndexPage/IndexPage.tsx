@@ -9,7 +9,7 @@ import {
 import { QUERY_PROFESSIONS } from './queries';
 
 import { Divider } from '@material-ui/core';
-import SEO from 'common/SEO/SEO';
+import Seo from 'common/Seo/Seo';
 import Layout from 'common/Layout/Layout';
 import Header from './components/Header/Header';
 import Timer from './components/Timer/Timer';
@@ -31,7 +31,7 @@ const IndexPage = ({
 }: IndexPageProps) => {
   return (
     <Layout padding={false}>
-      <SEO title="Strona główna" />
+      <Seo title="Strona główna" />
       <Header qualifications={qualifications} />
       <Timer dateOfTheExam={dateOfTheExam} />
       <AboutExam />

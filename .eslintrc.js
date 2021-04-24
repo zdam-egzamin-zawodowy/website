@@ -5,7 +5,6 @@ module.exports = {
     'react/jsx-pascal-case': [
       'warn',
       {
-        allowAllCaps: true,
         ignore: [],
       },
     ],
