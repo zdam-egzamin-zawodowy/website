@@ -3,10 +3,11 @@ const CDN = process.env.NEXT_PUBLIC_CDN_URI
   : '';
 
 module.exports = {
-  i18n: {
-    locales: ['pl'],
-    defaultLocale: 'pl',
-  },
+  // TODO: uncomment these lines when next.js fixes this issue - https://github.com/vercel/next.js/issues/22329
+  // i18n: {
+  //   locales: ['pl'],
+  //   defaultLocale: 'pl',
+  // },
   images: {
     domains: CDN instanceof URL ? ['localhost', CDN.hostname] : ['localhost'],
   },
