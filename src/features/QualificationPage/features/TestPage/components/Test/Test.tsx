@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, Fragment } from 'react';
 import { useUpdateEffect } from 'react-use';
 import clsx from 'clsx';
 import { usePrompt } from 'libs/hooks';
@@ -30,6 +30,7 @@ import Question from './Question';
 import Navigation from './Navigation';
 import Summary from './Summary';
 import FixedSpinner from './FixedSpinner';
+import KeyboardNavigationNote from './KeyboardNavigationNote';
 
 export interface TestProps {
   initialQuestions: QuestionT[];
@@ -50,6 +51,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   const [startedAt, setStartedAt] = useState(new Date());
   const [endedAt, setEndedAt] = useState(new Date());
   const classes = useStyles();
+  const maxTabIndex = questions.length + (reviewMode ? 1 : 0) - 1;
   usePrompt(!reviewMode);
   const analyticsParams = useMemo(
     () => ({
@@ -93,6 +95,10 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   };
 
   const handleSelectAnswer = (index: number, newAnswer: Answer) => {
+    if (selectedAnswers[index] === newAnswer) {
+      return;
+    }
+
     setSelectedAnswers(answers =>
       answers.map((oldAnswer, index2) =>
         index2 === index ? newAnswer : oldAnswer
@@ -107,6 +113,10 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   };
 
   const handleReset = async () => {
+    if (isFetching) {
+      return;
+    }
+
     try {
       setIsFetching(true);
       const { generateTest: newQuestions } = await createClient().request<
@@ -136,6 +146,20 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
     setReviewMode(true);
   };
 
+  const handleGoToNextTab = () => {
+    if (currentTab === maxTabIndex) {
+      return;
+    }
+    setCurrentTab(current => current + 1);
+  };
+
+  const handleGoToPrevTab = () => {
+    if (currentTab === 0) {
+      return;
+    }
+    setCurrentTab(current => current - 1);
+  };
+
   return (
     <Section>
       {isFetching && <FixedSpinner />}
@@ -150,74 +174,76 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
             Do tej kwalifikacji nie zostały dodane żadne pytania.
           </Typography>
         ) : (
-          <Paper>
-            <AppBar color="default" position="static">
-              <Tabs
-                value={currentTab}
-                textColor="primary"
-                indicatorColor="primary"
-                variant="scrollable"
-                onChange={(_, newTab: number) => setCurrentTab(newTab)}
-              >
-                {questions.map((question, index) => {
-                  return (
-                    <Tab
-                      key={question.id}
-                      className={clsx(
-                        reviewMode
-                          ? {
-                              [classes.correct]:
-                                question.correctAnswer ===
-                                selectedAnswers[index],
-                              [classes.incorrect]:
-                                question.correctAnswer !==
-                                selectedAnswers[index],
-                            }
-                          : {}
-                      )}
-                      label={`Pytanie ${index + 1}`}
+          <Fragment>
+            <KeyboardNavigationNote />
+            <Paper>
+              <AppBar color="default" position="static">
+                <Tabs
+                  value={currentTab}
+                  textColor="primary"
+                  indicatorColor="primary"
+                  variant="scrollable"
+                  onChange={(_, newTab: number) => setCurrentTab(newTab)}
+                >
+                  {questions.map((question, index) => {
+                    return (
+                      <Tab
+                        key={question.id}
+                        className={clsx(
+                          reviewMode
+                            ? {
+                                [classes.correct]:
+                                  question.correctAnswer ===
+                                  selectedAnswers[index],
+                                [classes.incorrect]:
+                                  question.correctAnswer !==
+                                  selectedAnswers[index],
+                              }
+                            : {}
+                        )}
+                        label={`Pytanie ${index + 1}`}
+                      />
+                    );
+                  })}
+                  <Tab label="Podsumowanie" disabled={!reviewMode} />
+                </Tabs>
+              </AppBar>
+              <Box padding={3}>
+                {questions.map((question, index) => (
+                  <TabPanel key={question.id} value={currentTab} index={index}>
+                    <Question
+                      question={question}
+                      answer={selectedAnswers[index]}
+                      onSelectAnswer={answer =>
+                        handleSelectAnswer(index, answer)
+                      }
+                      reviewMode={reviewMode}
+                      current={currentTab === index}
                     />
-                  );
-                })}
-                <Tab label="Podsumowanie" disabled={!reviewMode} />
-              </Tabs>
-            </AppBar>
-            <Box padding={3}>
-              {questions.map((question, index) => (
-                <TabPanel key={question.id} value={currentTab} index={index}>
-                  <Question
-                    question={question}
-                    answer={selectedAnswers[index]}
-                    onSelectAnswer={answer => handleSelectAnswer(index, answer)}
+                  </TabPanel>
+                ))}
+                <TabPanel value={currentTab} index={questions.length}>
+                  <Summary
+                    answers={selectedAnswers}
+                    questions={questions}
                     reviewMode={reviewMode}
+                    startedAt={startedAt}
+                    endedAt={endedAt}
                   />
                 </TabPanel>
-              ))}
-              <TabPanel value={currentTab} index={questions.length}>
-                <Summary
-                  answers={selectedAnswers}
-                  questions={questions}
+                <Navigation
+                  hasPreviousTab={currentTab !== 0}
+                  hasNextTab={currentTab !== maxTabIndex}
+                  onRequestPrevTab={handleGoToPrevTab}
+                  onRequestNextTab={handleGoToNextTab}
+                  isLastQuestion={currentTab === maxTabIndex}
                   reviewMode={reviewMode}
-                  startedAt={startedAt}
-                  endedAt={endedAt}
+                  onReset={handleReset}
+                  onFinish={handleFinish}
                 />
-              </TabPanel>
-              <Navigation
-                hasPreviousTab={currentTab !== 0}
-                hasNextTab={
-                  currentTab + 1 !== questions.length + (reviewMode ? 1 : 0)
-                }
-                onRequestPrevTab={() => setCurrentTab(currentTab - 1)}
-                onRequestNextTab={() => setCurrentTab(currentTab + 1)}
-                isLastQuestion={
-                  currentTab + 1 === questions.length + (reviewMode ? 1 : 0)
-                }
-                reviewMode={reviewMode}
-                onReset={handleReset}
-                onFinish={handleFinish}
-              />
-            </Box>
-          </Paper>
+              </Box>
+            </Paper>
+          </Fragment>
         )}
       </Container>
     </Section>

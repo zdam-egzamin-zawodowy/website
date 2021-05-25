@@ -1,3 +1,5 @@
+import { useKeyPressEvent } from 'react-use';
+
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Button, ButtonGroup, useMediaQuery } from '@material-ui/core';
 import {
@@ -18,6 +20,16 @@ export interface NavigationProps {
   reviewMode: boolean;
 }
 
+const NavigationKeyPressEvents = ({
+  onRequestNextTab,
+  onRequestPrevTab,
+}: Pick<NavigationProps, 'onRequestNextTab' | 'onRequestPrevTab'>) => {
+  useKeyPressEvent('ArrowRight', onRequestNextTab);
+  useKeyPressEvent('ArrowLeft', onRequestPrevTab);
+
+  return null;
+};
+
 const Navigation = ({
   hasPreviousTab,
   hasNextTab,
@@ -31,6 +43,7 @@ const Navigation = ({
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <div className={classes.buttonContainer}>
       <div className={classes.navButtonGroup}>
@@ -65,6 +78,10 @@ const Navigation = ({
           </Button>
         )}
       </ButtonGroup>
+      <NavigationKeyPressEvents
+        onRequestNextTab={onRequestNextTab}
+        onRequestPrevTab={onRequestPrevTab}
+      />
     </div>
   );
 };
