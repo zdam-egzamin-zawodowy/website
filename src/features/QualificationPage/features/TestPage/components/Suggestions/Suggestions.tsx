@@ -3,6 +3,7 @@ import { Qualification } from 'libs/graphql';
 import { QUESTIONS } from 'config/app';
 import { Route } from 'config/routing';
 
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Button,
   Card,
@@ -20,6 +21,8 @@ export interface SuggestionsProps {
 }
 
 const Suggestions = ({ suggestions }: SuggestionsProps) => {
+  const classes = useStyles();
+
   return (
     <Section>
       <Container>
@@ -30,11 +33,12 @@ const Suggestions = ({ suggestions }: SuggestionsProps) => {
           {suggestions.map(suggestion => {
             return (
               <Grid item xs={12} sm={6} md={4} key={suggestion.id}>
-                <Card>
+                <Card className={classes.card}>
                   <CardHeader
                     title={suggestion.name}
                     subheader={suggestion.code}
                   />
+                  <div className={classes.spacer} />
                   <CardActions>
                     {QUESTIONS.map(limit => {
                       return (
@@ -67,5 +71,16 @@ const Suggestions = ({ suggestions }: SuggestionsProps) => {
     </Section>
   );
 };
+
+const useStyles = makeStyles(() => ({
+  card: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  },
+  spacer: {
+    flex: 1,
+  },
+}));
 
 export default Suggestions;
