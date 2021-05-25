@@ -36,6 +36,8 @@ export interface TestProps {
   qualification: Qualification;
 }
 
+const MIN_QUESTIONS_REQUIRED_TO_SHOW_CONFIRMATION = 2;
+
 const Test = ({ initialQuestions, qualification }: TestProps) => {
   const headingRef = useRef<HTMLSpanElement | null>(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -123,10 +125,17 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   };
 
   const handleFinish = () => {
+    if (
+      initialQuestions.length >= MIN_QUESTIONS_REQUIRED_TO_SHOW_CONFIRMATION &&
+      !window.confirm('Czy na pewno chcesz zakończyć test?')
+    ) {
+      return;
+    }
     setEndedAt(new Date());
     setCurrentTab(currentTab => currentTab + 1);
     setReviewMode(true);
   };
+
   return (
     <Section>
       {isFetching && <FixedSpinner />}
