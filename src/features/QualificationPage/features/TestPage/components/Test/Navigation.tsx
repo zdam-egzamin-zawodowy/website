@@ -1,3 +1,5 @@
+import { useKeyPressEvent } from 'react-use';
+
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Button, ButtonGroup, useMediaQuery } from '@material-ui/core';
 import {
@@ -31,6 +33,9 @@ const Navigation = ({
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('sm'));
+  useKeyPressEvent('ArrowRight', onRequestNextTab);
+  useKeyPressEvent('ArrowLeft', onRequestPrevTab);
+
   return (
     <div className={classes.buttonContainer}>
       <div className={classes.navButtonGroup}>

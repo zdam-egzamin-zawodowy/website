@@ -50,6 +50,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   const [startedAt, setStartedAt] = useState(new Date());
   const [endedAt, setEndedAt] = useState(new Date());
   const classes = useStyles();
+  const maxTabIndex = questions.length + (reviewMode ? 1 : 0) - 1;
   usePrompt(!reviewMode);
   const analyticsParams = useMemo(
     () => ({
@@ -136,6 +137,20 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
     setReviewMode(true);
   };
 
+  const handleGoToNextTab = () => {
+    if (currentTab === maxTabIndex) {
+      return;
+    }
+    setCurrentTab(current => current + 1);
+  };
+
+  const handleGoToPrevTab = () => {
+    if (currentTab === 0) {
+      return;
+    }
+    setCurrentTab(current => current - 1);
+  };
+
   return (
     <Section>
       {isFetching && <FixedSpinner />}
@@ -204,14 +219,10 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
               </TabPanel>
               <Navigation
                 hasPreviousTab={currentTab !== 0}
-                hasNextTab={
-                  currentTab + 1 !== questions.length + (reviewMode ? 1 : 0)
-                }
-                onRequestPrevTab={() => setCurrentTab(currentTab - 1)}
-                onRequestNextTab={() => setCurrentTab(currentTab + 1)}
-                isLastQuestion={
-                  currentTab + 1 === questions.length + (reviewMode ? 1 : 0)
-                }
+                hasNextTab={currentTab !== maxTabIndex}
+                onRequestPrevTab={handleGoToPrevTab}
+                onRequestNextTab={handleGoToNextTab}
+                isLastQuestion={currentTab === maxTabIndex}
                 reviewMode={reviewMode}
                 onReset={handleReset}
                 onFinish={handleFinish}
