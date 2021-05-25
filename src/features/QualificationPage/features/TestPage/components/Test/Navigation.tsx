@@ -20,6 +20,16 @@ export interface NavigationProps {
   reviewMode: boolean;
 }
 
+const NavigationKeyPressEvents = ({
+  onRequestNextTab,
+  onRequestPrevTab,
+}: Pick<NavigationProps, 'onRequestNextTab' | 'onRequestPrevTab'>) => {
+  useKeyPressEvent('ArrowRight', onRequestNextTab);
+  useKeyPressEvent('ArrowLeft', onRequestPrevTab);
+
+  return null;
+};
+
 const Navigation = ({
   hasPreviousTab,
   hasNextTab,
@@ -33,8 +43,6 @@ const Navigation = ({
   const classes = useStyles();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('sm'));
-  useKeyPressEvent('ArrowRight', onRequestNextTab);
-  useKeyPressEvent('ArrowLeft', onRequestPrevTab);
 
   return (
     <div className={classes.buttonContainer}>
@@ -70,6 +78,10 @@ const Navigation = ({
           </Button>
         )}
       </ButtonGroup>
+      <NavigationKeyPressEvents
+        onRequestNextTab={onRequestNextTab}
+        onRequestPrevTab={onRequestPrevTab}
+      />
     </div>
   );
 };

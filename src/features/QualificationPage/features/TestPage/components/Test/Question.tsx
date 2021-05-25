@@ -21,7 +21,7 @@ export interface QuestionProps {
 
 const ANSWERS = Object.values(Answer);
 
-const QuestionKeyPressEvent = ({
+const QuestionKeyPressEvents = ({
   onSelectAnswer,
 }: Pick<QuestionProps, 'onSelectAnswer'>) => {
   useKeyPressEvent(
@@ -129,7 +129,7 @@ const Question = ({
           </Button>
         );
       })}
-      {current && <QuestionKeyPressEvent onSelectAnswer={onSelectAnswer} />}
+      {current && <QuestionKeyPressEvents onSelectAnswer={onSelectAnswer} />}
     </div>
   );
 };
