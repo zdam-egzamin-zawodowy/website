@@ -94,6 +94,10 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   };
 
   const handleSelectAnswer = (index: number, newAnswer: Answer) => {
+    if (selectedAnswers[index] === newAnswer) {
+      return;
+    }
+
     setSelectedAnswers(answers =>
       answers.map((oldAnswer, index2) =>
         index2 === index ? newAnswer : oldAnswer
@@ -108,6 +112,10 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   };
 
   const handleReset = async () => {
+    if (isFetching) {
+      return;
+    }
+
     try {
       setIsFetching(true);
       const { generateTest: newQuestions } = await createClient().request<
@@ -205,6 +213,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
                     answer={selectedAnswers[index]}
                     onSelectAnswer={answer => handleSelectAnswer(index, answer)}
                     reviewMode={reviewMode}
+                    current={currentTab === index}
                   />
                 </TabPanel>
               ))}

@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { useKeyPressEvent } from 'react-use';
 import clsx from 'clsx';
 import buildURL from 'utils/buildURL';
 import { Answer, Question as QuestionT } from 'libs/graphql';
@@ -15,18 +16,35 @@ export interface QuestionProps {
   answer: Answer;
   onSelectAnswer: (answer: Answer) => void;
   reviewMode: boolean;
+  current: boolean;
 }
 
 const ANSWERS = Object.values(Answer);
+
+const QuestionKeyPressEvent = ({
+  onSelectAnswer,
+}: Pick<QuestionProps, 'onSelectAnswer'>) => {
+  useKeyPressEvent(
+    e => {
+      return (ANSWERS as string[]).includes(e.key.toLowerCase());
+    },
+    e => {
+      onSelectAnswer(e.key.toLowerCase() as Answer);
+    }
+  );
+  return null;
+};
 
 const Question = ({
   question,
   answer,
   onSelectAnswer,
   reviewMode,
+  current,
 }: QuestionProps) => {
   const classes = useStyles();
   const updatedAt = new Date(question.updatedAt).getTime();
+
   return (
     <div className={classes.question}>
       {question.from && (
@@ -111,6 +129,7 @@ const Question = ({
           </Button>
         );
       })}
+      {current && <QuestionKeyPressEvent onSelectAnswer={onSelectAnswer} />}
     </div>
   );
 };
