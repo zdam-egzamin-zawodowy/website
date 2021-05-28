@@ -38,6 +38,7 @@ export const QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS = gql`
     similarQualifications(
       limit: $limitSuggestions
       qualificationID: $qualificationID
+      sort: ["formula ASC", "code ASC"]
     ) @skip(if: $skipSuggestions) {
       items {
         id
