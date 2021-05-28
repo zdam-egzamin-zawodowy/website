@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { isString, isNil } from 'lodash';
 import { polishPlurals } from 'polish-plurals';
 import {
   createClient,
@@ -73,7 +74,8 @@ export const getStaticProps: GetStaticProps<
     },
   };
 
-  if (!params) return { notFound: true, revalidate: REVALIDATE_ERROR };
+  if (!params || isNil(params.limit) || !isString(params.slug))
+    return { notFound: true, revalidate: REVALIDATE_ERROR };
   const limit = parseInt(params.limit);
   const slug = params.slug.trim();
   if (
