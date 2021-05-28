@@ -51,9 +51,9 @@ const Question = ({
         <Typography variant="caption">{question.from}</Typography>
       )}
       <Typography variant="h4" component="h3">
-        {question.content.split('\n').map(fragment => {
+        {question.content.split('\n').map((fragment, index) => {
           return (
-            <Fragment key={fragment}>
+            <Fragment key={index}>
               <WordWrap>{fragment}</WordWrap>
               <br />
             </Fragment>
