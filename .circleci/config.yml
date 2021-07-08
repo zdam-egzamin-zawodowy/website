@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build_latest:
     docker:
       - image: circleci/node:14.17.3
     working_directory: ~/zdamegzaminzawodowy
