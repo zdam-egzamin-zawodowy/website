@@ -9,7 +9,7 @@
     "start": "next start",
     "start:production": "NODE_ENV=production yarn run start",
     "codegen": "graphql-codegen",
-    "lint": "eslint . --ext ts --ext tsx --ext js"
+    "lint": "next lint"
   },
   "dependencies": {
     "@kichiyaki/roboto": "^1.0.0",
@@ -40,7 +40,7 @@
     "babel-eslint": "^10.0.0",
     "babel-plugin-transform-imports": "^2.0.0",
     "eslint": "^7.5.0",
-    "eslint-config-react-app": "^6.0.0",
+    "eslint-config-next": "^11.0.1",
     "eslint-plugin-flowtype": "^5.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
