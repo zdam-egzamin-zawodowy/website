@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { gql } from 'graphql-request';
 import { getServerSideSitemap } from 'next-sitemap';
-import { ISitemapFiled } from 'next-sitemap/dist/@types/interface';
+import { ISitemapField } from 'next-sitemap/dist/@types/interface';
 import { createClient } from 'libs/graphql';
 import { Query, QueryQualificationsArgs } from 'libs/graphql';
 import { WEBSITE_URL, QUESTIONS } from 'config/app';
@@ -21,7 +21,7 @@ const LIMIT = 1000;
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
   const client = createClient();
-  let fields: ISitemapFiled[] = [];
+  let fields: ISitemapField[] = [];
 
   try {
     const {
@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
       fields = ([] as typeof fields).concat(
         ...QUESTIONS.map(limit => {
           return items.map(
-            (item): ISitemapFiled => {
+            (item): ISitemapField => {
               return {
                 loc: `${WEBSITE_URL}${resolveAs({
                   pathname: Route.TestPage,
