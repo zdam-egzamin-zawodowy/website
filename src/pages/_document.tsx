@@ -33,8 +33,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      // TODO: remove lang prop when next.js fixes this issue - https://github.com/vercel/next.js/issues/22329
-      <Html lang="pl">
+      <Html>
         <Head>
           <script
             async
