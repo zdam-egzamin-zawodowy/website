@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "next-sitemap",
+    "postbuild": "yarn run sitemap",
+    "sitemap": "next-sitemap",
     "start": "next start",
     "start:production": "NODE_ENV=production yarn run start",
     "codegen": "graphql-codegen",
