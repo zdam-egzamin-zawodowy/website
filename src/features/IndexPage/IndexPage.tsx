@@ -17,6 +17,7 @@ import AboutExam from './components/AboutExam/AboutExam';
 import ExamParts from './components/ExamParts/ExamParts';
 import CheckMobileApp from './components/CheckMobileApp/CheckMobileApp';
 import Professions from './components/Professions/Professions';
+import * as Sentry from '@sentry/nextjs';
 
 interface IndexPageProps {
   professions: Profession[];

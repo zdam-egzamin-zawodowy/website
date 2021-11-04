@@ -1,8 +1,17 @@
+const { withSentryConfig } = require('@sentry/nextjs');
+
 const CDN = process.env.NEXT_PUBLIC_CDN_URI
   ? new URL(process.env.NEXT_PUBLIC_CDN_URI)
   : '';
 
-module.exports = {
+const cfg = {
+  sentry: {
+    disableServerWebpackPlugin:
+      process.env.ENABLE_SENTRY_WEBPACK_PLUGIN !== 'true',
+    get disableClientWebpackPlugin() {
+      return this.disableServerWebpackPlugin;
+    },
+  },
   i18n: {
     locales: ['pl'],
     defaultLocale: 'pl',
@@ -25,3 +34,5 @@ module.exports = {
     ];
   },
 };
+
+module.exports = withSentryConfig(cfg, { silent: true });
