@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { gql } from 'graphql-request';
 import { getServerSideSitemap } from 'next-sitemap';
+import * as Sentry from '@sentry/nextjs';
 import { ISitemapField } from 'next-sitemap/dist/@types/interface';
 import { createClient } from 'libs/graphql';
 import { Query, QueryQualificationsArgs } from 'libs/graphql';
@@ -33,23 +34,22 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
     if (Array.isArray(items)) {
       fields = ([] as typeof fields).concat(
         ...QUESTIONS.map(limit => {
-          return items.map(
-            (item): ISitemapField => {
-              return {
-                loc: `${WEBSITE_URL}${resolveAs({
-                  pathname: Route.TestPage,
-                  query: { slug: item.slug, limit },
-                })}`,
-                lastmod: new Date().toISOString(),
-                changefreq: 'always',
-              };
-            }
-          );
+          return items.map((item): ISitemapField => {
+            return {
+              loc: `${WEBSITE_URL}${resolveAs({
+                pathname: Route.TestPage,
+                query: { slug: item.slug, limit },
+              })}`,
+              lastmod: new Date().toISOString(),
+              changefreq: 'always',
+            };
+          });
         })
       );
     }
   } catch (e) {
     console.log('server-sitemap.xml', e.message);
+    Sentry.captureException(e);
   }
 
   return getServerSideSitemap(ctx, fields);
