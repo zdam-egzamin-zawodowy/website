@@ -31,8 +31,8 @@ RUN yarn build
 FROM node:14.18.1-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV BUILDING_PROCESS false
+ENV NODE_ENV=production
+ENV BUILDING_PROCESS=false
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next

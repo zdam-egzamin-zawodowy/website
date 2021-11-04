@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, Fragment } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import { useUpdateEffect } from 'react-use';
 import clsx from 'clsx';
 import { usePrompt } from 'libs/hooks';
@@ -9,8 +9,6 @@ import {
   Query,
   Question as QuestionT,
 } from 'libs/graphql';
-import { Event } from 'config/analytics';
-import gtag from 'utils/gtag';
 import { QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS } from '../../queries';
 import { QueryGenerateTestSimilarQualificationsArgs } from '../../types';
 
@@ -53,20 +51,6 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
   const classes = useStyles();
   const maxTabIndex = questions.length + (reviewMode ? 1 : 0) - 1;
   usePrompt(!reviewMode);
-  const analyticsParams = useMemo(
-    () => ({
-      qualificationID: qualification.id.toString(),
-      questions: questions.length.toString(),
-    }),
-    [qualification, questions]
-  );
-  useEffect(() => {
-    gtag(
-      'event',
-      reviewMode ? Event.FinishTest : Event.StartTest,
-      analyticsParams
-    );
-  }, [reviewMode, analyticsParams]);
   useUpdateEffect(() => {
     if (headingRef.current?.scrollIntoView) {
       headingRef.current?.scrollIntoView({
@@ -104,12 +88,6 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
         index2 === index ? newAnswer : oldAnswer
       )
     );
-    gtag('event', Event.SelectAnswer, {
-      qualificationID: analyticsParams.qualificationID,
-      questionID: questions[index].id.toString(),
-      answer: newAnswer,
-      correct: questions[index].correctAnswer === newAnswer ? '1' : '0',
-    });
   };
 
   const handleReset = async () => {
