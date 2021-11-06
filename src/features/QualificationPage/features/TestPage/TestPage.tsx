@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import * as Sentry from '@sentry/nextjs';
 import { isString, isNil } from 'lodash';
 import { polishPlurals } from 'polish-plurals';
 import {
@@ -58,74 +59,77 @@ const SUGGESTIONS_LIMIT = 6;
 const REVALIDATE_ERROR = 600;
 const REVALIDATE_SUCCESS = 10;
 
-export const getStaticProps: GetStaticProps<
-  TestPageProps,
-  TestPageParams
-> = async ({ params }) => {
-  const props: TestPageProps = {
-    suggestions: [],
-    questions: [],
-    qualification: {
-      id: 0,
-      slug: '',
-      name: '',
-      code: '',
-      createdAt: new Date(0),
-    },
-  };
-
-  if (!params || isNil(params.limit) || !isString(params.slug))
-    return { notFound: true, revalidate: REVALIDATE_ERROR };
-  const limit = parseInt(params.limit);
-  const slug = params.slug.trim();
-  if (
-    isNaN(limit) ||
-    !QUESTIONS.some(numOfQuestions => numOfQuestions === limit)
-  ) {
-    return {
-      props,
-      redirect: {
-        destination: resolveAs({
-          pathname: Route.TestPage,
-          query: { ...params, limit: QUESTIONS[QUESTIONS.length - 1] },
-        }),
+export const getStaticProps: GetStaticProps<TestPageProps, TestPageParams> =
+  async ({ params }) => {
+    const props: TestPageProps = {
+      suggestions: [],
+      questions: [],
+      qualification: {
+        id: 0,
+        slug: '',
+        name: '',
+        code: '',
+        createdAt: new Date(0),
       },
-      revalidate: REVALIDATE_ERROR,
     };
-  }
 
-  const client = createClient();
-  try {
-    const { qualification } = await client.request<
-      Pick<Query, 'qualification'>,
-      QueryQualificationArgs
-    >(QUERY_QUALIFICATION, { slug });
-    if (!qualification) {
-      throw new Error('404');
+    if (!params || isNil(params.limit) || !isString(params.slug))
+      return { notFound: true, revalidate: REVALIDATE_ERROR };
+    const limit = parseInt(params.limit);
+    const slug = params.slug.trim();
+    if (
+      isNaN(limit) ||
+      !QUESTIONS.some(numOfQuestions => numOfQuestions === limit)
+    ) {
+      return {
+        props,
+        redirect: {
+          destination: resolveAs({
+            pathname: Route.TestPage,
+            query: { ...params, limit: QUESTIONS[QUESTIONS.length - 1] },
+          }),
+        },
+        revalidate: REVALIDATE_ERROR,
+      };
     }
-    props.qualification = qualification;
-    const { generateTest, similarQualifications } = await client.request<
-      Pick<Query, 'generateTest' | 'similarQualifications'>,
-      QueryGenerateTestSimilarQualificationsArgs
-    >(QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS, {
-      limitSuggestions: SUGGESTIONS_LIMIT,
-      qualificationID: qualification.id,
-      limitTest: limit,
-      skipSuggestions: false,
-    });
-    if (Array.isArray(generateTest)) {
-      props.questions = generateTest;
+
+    const client = createClient();
+    try {
+      const { qualification } = await client.request<
+        Pick<Query, 'qualification'>,
+        QueryQualificationArgs
+      >(QUERY_QUALIFICATION, { slug });
+      if (!qualification) {
+        throw new Error('Qualification not found: slug=' + slug);
+      }
+      props.qualification = qualification;
+
+      const { generateTest, similarQualifications } = await client.request<
+        Pick<Query, 'generateTest' | 'similarQualifications'>,
+        QueryGenerateTestSimilarQualificationsArgs
+      >(QUERY_GENERATE_TEST_SIMILAR_QUALIFICATIONS, {
+        limitSuggestions: SUGGESTIONS_LIMIT,
+        qualificationID: qualification.id,
+        limitTest: limit,
+        skipSuggestions: false,
+      });
+
+      if (Array.isArray(generateTest)) {
+        props.questions = generateTest;
+      }
+
+      if (Array.isArray(similarQualifications.items)) {
+        props.suggestions = similarQualifications.items;
+      }
+
+      return {
+        props,
+        revalidate: REVALIDATE_SUCCESS,
+      };
+    } catch (e) {
+      Sentry.captureException(e);
+      return { notFound: true, revalidate: REVALIDATE_ERROR };
     }
-    if (Array.isArray(similarQualifications.items)) {
-      props.suggestions = similarQualifications.items;
-    }
-    return {
-      props,
-      revalidate: REVALIDATE_SUCCESS,
-    };
-  } catch (e) {
-    return { notFound: true, revalidate: REVALIDATE_ERROR };
-  }
-};
+  };
 
 export default TestPage;

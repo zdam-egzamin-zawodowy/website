@@ -1,5 +1,6 @@
 import { Fragment, useRef, useState } from 'react';
 import { useUpdateEffect } from 'react-use';
+import * as Sentry from '@sentry/nextjs';
 import clsx from 'clsx';
 import { usePrompt } from 'libs/hooks';
 import {
@@ -97,6 +98,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
 
     try {
       setIsFetching(true);
+
       const { generateTest: newQuestions } = await createClient().request<
         Pick<Query, 'generateTest'>,
         QueryGenerateTestSimilarQualificationsArgs
@@ -106,8 +108,11 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
         skipSuggestions: true,
         qualificationID: qualification.id,
       });
+
       resetValues(newQuestions);
-    } catch (e) {}
+    } catch (e) {
+      Sentry.captureException(e);
+    }
 
     setIsFetching(false);
   };
