@@ -11,9 +11,8 @@ const initSentry = () => {
   Sentry.init({
     dsn: SENTRY_DSN,
     tracesSampleRate: 0.3,
-    environment:
-      process.env.SENTRY_ENVIRONMENT ||
-      process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
+    environment: process.env.NODE_ENV ?? 'development',
+    release: process.env.NEXT_PUBLIC_VERSION,
   });
 };
 
