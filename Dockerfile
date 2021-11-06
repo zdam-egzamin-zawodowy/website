@@ -46,6 +46,7 @@ ENV NODE_ENV=production \
     SENTRY_DSN=$SENTRY_DSN \
     NEXT_PUBLIC_SENTRY_DSN=$SENTRY_DSN \
     VERSION=$VERSION \
+    NEXT_PUBLIC_VERSION=$VERSION \
     BUILDING_PROCESS=false
 
 COPY --from=builder /app/next.config.js ./
