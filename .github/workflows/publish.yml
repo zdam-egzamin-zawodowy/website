@@ -45,6 +45,7 @@ jobs:
             SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }}
             SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
             SENTRY_DSN=${{ secrets.SENTRY_DSN }}
+            VERSION=v${{ steps.get_version.outputs.VERSION }}
           tags: |
             ${{ secrets.REGISTRY_NAME }}/zdam-egzamin-zawodowy-website:latest
             ${{ secrets.REGISTRY_NAME }}/zdam-egzamin-zawodowy-website:${{ steps.get_version.outputs.VERSION }}

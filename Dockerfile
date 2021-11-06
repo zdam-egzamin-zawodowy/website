@@ -9,6 +9,7 @@ RUN yarn install --frozen-lockfile
 # Rebuild the source code only when needed
 FROM node:14.18.1-alpine AS builder
 
+ARG VERSION="v0.0.0"
 ARG ENABLE_SENTRY_WEBPACK_PLUGIN="false"
 ARG SENTRY_URL=""
 ARG SENTRY_ORG=""
@@ -25,6 +26,7 @@ ENV ENABLE_SENTRY_WEBPACK_PLUGIN=$ENABLE_SENTRY_WEBPACK_PLUGIN \
     SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN \
     SENTRY_DSN=$SENTRY_DSN \
     NEXT_PUBLIC_SENTRY_DSN=$SENTRY_DSN \
+    NEXT_PUBLIC_VERSION=$VERSION \
     BUILDING_PROCESS=true
 
 COPY . .
@@ -37,11 +39,13 @@ FROM node:14.18.1-alpine AS runner
 
 WORKDIR /app
 
+ARG VERSION="v0.0.0"
 ARG SENTRY_DSN=""
 
 ENV NODE_ENV=production \
     SENTRY_DSN=$SENTRY_DSN \
     NEXT_PUBLIC_SENTRY_DSN=$SENTRY_DSN \
+    VERSION=$VERSION \
     BUILDING_PROCESS=false
 
 COPY --from=builder /app/next.config.js ./

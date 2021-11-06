@@ -35,4 +35,7 @@ const cfg = {
   },
 };
 
-module.exports = withSentryConfig(cfg, { silent: true });
+module.exports = withSentryConfig(cfg, {
+  silent: true,
+  release: process.env.NEXT_PUBLIC_VERSION,
+});
