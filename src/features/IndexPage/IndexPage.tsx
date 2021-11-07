@@ -1,5 +1,4 @@
 import { GetStaticProps } from 'next';
-import * as Sentry from '@sentry/nextjs';
 import {
   createClient,
   Profession,
@@ -77,9 +76,7 @@ export const getStaticProps: GetStaticProps = async () => {
         resp.professions.items
       );
     }
-  } catch (e) {
-    Sentry.captureException(e);
-  }
+  } catch (e) {}
 
   return {
     props: pageProps,

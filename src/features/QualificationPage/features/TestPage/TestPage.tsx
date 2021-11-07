@@ -1,5 +1,4 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import * as Sentry from '@sentry/nextjs';
 import { isString, isNil } from 'lodash';
 import { polishPlurals } from 'polish-plurals';
 import {
@@ -127,7 +126,6 @@ export const getStaticProps: GetStaticProps<TestPageProps, TestPageParams> =
         revalidate: REVALIDATE_SUCCESS,
       };
     } catch (e) {
-      Sentry.captureException(e);
       return { notFound: true, revalidate: REVALIDATE_ERROR };
     }
   };
