@@ -1,6 +1,5 @@
 import { Fragment, useRef, useState } from 'react';
 import { useUpdateEffect } from 'react-use';
-import * as Sentry from '@sentry/nextjs';
 import clsx from 'clsx';
 import { usePrompt } from 'libs/hooks';
 import {
@@ -110,9 +109,7 @@ const Test = ({ initialQuestions, qualification }: TestProps) => {
       });
 
       resetValues(newQuestions);
-    } catch (e) {
-      Sentry.captureException(e);
-    }
+    } catch (e) {}
 
     setIsFetching(false);
   };
