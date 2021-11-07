@@ -7,7 +7,7 @@ const CDN = process.env.NEXT_PUBLIC_CDN_URI
 const cfg = {
   sentry: {
     disableServerWebpackPlugin:
-      process.env.ENABLE_SENTRY_WEBPACK_PLUGIN !== 'true',
+      process.env.SENTRY_WEBPACK_PLUGIN_ENABLED !== 'true',
     get disableClientWebpackPlugin() {
       return this.disableServerWebpackPlugin;
     },
