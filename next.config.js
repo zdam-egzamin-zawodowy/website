@@ -37,5 +37,5 @@ const cfg = {
 
 module.exports = withSentryConfig(cfg, {
   silent: true,
-  release: process.env.NEXT_PUBLIC_VERSION,
+  release: 'zdam-egzamin-zawodowy-website@' + process.env.NEXT_PUBLIC_VERSION,
 });

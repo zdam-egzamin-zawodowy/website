@@ -45,7 +45,7 @@ jobs:
             SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }}
             SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
             SENTRY_DSN=${{ secrets.SENTRY_DSN }}
-            VERSION=v${{ steps.get_version.outputs.VERSION }}
+            VERSION=${{ steps.get_version.outputs.VERSION }}
             PLAUSIBLE_ENABLED=true
             PLAUSIBLE_DOMAIN=${{ secrets.PLAUSIBLE_DOMAIN }}
             PLAUSIBLE_CUSTOM_DOMAIN=${{ secrets.PLAUSIBLE_CUSTOM_DOMAIN }}

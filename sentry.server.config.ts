@@ -12,7 +12,9 @@ const initSentry = () => {
     dsn: SENTRY_DSN,
     tracesSampleRate: 0.3,
     environment: process.env.NODE_ENV ?? 'development',
-    release: process.env.NEXT_PUBLIC_VERSION,
+    release:
+      'zdam-egzamin-zawodowy-website@' +
+      (process.env.NEXT_PUBLIC_VERSION ?? 'development'),
   });
 };
 
